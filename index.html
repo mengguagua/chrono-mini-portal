@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chrono Mini · 战斗×据点×牧场 · 微信小游戏</title>
-<meta name="description" content="白天在地牢与时间债务搏斗，晚上回到新据点种菜、养鸡、玩牧场交易。60 关像素 RPG + 生活模拟，微信即玩。">
+<meta name="description" content="晚上在地牢与时间债务搏斗，收集装备、合成升阶并培养宠物；白天回到新据点种菜、养鸡、经营牧场。了解 Chrono Mini 的 60 关像素 RPG 玩法并扫码申请测试。">
 <link rel="icon" type="image/png" href="assets/brand/avatar.png">
-<meta property="og:title" content="Chrono Mini · 时间债务转轮 · 爬行×牧场×交易">
-<meta property="og:description" content="60 关地牢 + 新据点农场 + 牧场养成 · 种菜收获、鸡嘴接蛋、屠夫订单，微信小游戏即玩即停。">
+<meta property="og:title" content="Chrono Mini · 时间债务转轮 · 地牢×牧场×交易">
+<meta property="og:description" content="60 关地牢 + 装备合成 + 宠物喂养 + 新据点农场 · 查看实机玩法并扫码申请测试。">
 <meta property="og:image" content="assets/screenshots/first-battle.png">
 <style>
 /* ============ 像素化渲染：所有游戏图必须保持锐利 ============ */
@@ -71,6 +71,7 @@ body::after {
 }
 
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+header[id], section[id] { scroll-margin-top: 60px; }
 
 /* ============ 顶部导航 ============ */
 nav {
@@ -85,7 +86,7 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
   box-shadow: 0 0 12px var(--chrono-glow); animation: pulse 2.4s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.45} }
 .brand small { color: var(--mute); font-weight: 400; font-size: 12px; margin-left: 2px; }
-.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links { display: flex; gap: 22px; list-style: none; }
 .nav-links a { color: var(--body); text-decoration: none; font-size: 14px; transition: color .2s; }
 .nav-links a:hover { color: var(--chrono); }
 .nav-cta {
@@ -93,6 +94,9 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
   font-size: 13px; text-decoration: none; border-radius: 6px; transition: all .2s;
 }
 .nav-cta:hover { background: var(--chrono); color: #062521; box-shadow: 0 0 20px var(--chrono-glow); }
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--chrono); outline-offset: 4px;
+}
 
 /* ============ Hero ============ */
 .hero {
@@ -128,6 +132,7 @@ h1.hero-title .chrono-word {
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 13px 28px; border-radius: 8px; font-size: 15px; font-weight: 600;
+  font-family: inherit; line-height: 1.7; cursor: pointer;
   text-decoration: none; transition: all .22s; border: 1px solid transparent;
 }
 .btn-primary { background: var(--chrono); color: #062521; }
@@ -164,6 +169,7 @@ h1.hero-title .chrono-word {
 /* ============ 章节通用 ============ */
 section { padding: 110px 0; position: relative; }
 #homestead { background: linear-gradient(180deg, transparent, rgba(142,208,90,.03) 30%, transparent 100%); }
+#growth { background: linear-gradient(180deg, transparent, rgba(63,216,200,.025) 34%, transparent 100%); }
 .sec-head { max-width: 640px; margin-bottom: 64px; }
 .sec-kicker {
   font-family: var(--font-pixel); font-size: 13px; letter-spacing: .3em;
@@ -196,15 +202,16 @@ section { padding: 110px 0; position: relative; }
   letter-spacing: .22em;
 }
 .loop-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.loop-head .loop-icon { margin-bottom: 0; }
+.loop-head .loop-chip { margin-bottom: 0; }
 .loop-head .loop-num { color: var(--chrono); opacity: .7; }
-.loop-icon {
-  width: 44px; height: 44px; border-radius: 8px;
+.loop-chip {
+  min-width: 58px; height: 32px; padding: 0 10px; border-radius: 6px;
   background: var(--chrono-dim); border: 1px solid rgba(63,216,200,.25);
-  display: grid; place-items: center; font-size: 22px;
+  display: grid; place-items: center; color: var(--chrono);
+  font-family: var(--font-pixel); font-size: 10px; letter-spacing: .14em;
 }
-.loop-icon.ember { background: var(--ember-dim); border-color: rgba(255,97,97,.25); }
-.loop-icon.gold { background: rgba(255,197,51,.1); border-color: rgba(255,197,51,.25); }
+.loop-chip.ember { background: var(--ember-dim); border-color: rgba(255,97,97,.25); color: var(--ember); }
+.loop-chip.gold { background: rgba(255,197,51,.1); border-color: rgba(255,197,51,.25); color: var(--gold); }
 .loop-card h3 { color: var(--ink); font-size: 19px; font-weight: 700; margin-bottom: 10px; }
 .loop-card p { font-size: 14.5px; color: var(--body); }
 .loop-card p strong { color: var(--ink); font-weight: 600; }
@@ -215,13 +222,14 @@ section { padding: 110px 0; position: relative; }
 .shot-row:nth-child(even) { grid-template-columns: 1fr 340px; }
 .shot-row:nth-child(even) .shot-frame { order: 2; }
 .shot-frame {
-  position: relative; border-radius: 18px; overflow: hidden;
+  position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 9 / 16;
+  background: var(--surface);
   border: 1px solid var(--hairline);
   box-shadow: 0 24px 60px rgba(0,0,0,.5);
   transition: transform .3s, box-shadow .3s;
 }
 .shot-frame:hover { transform: translateY(-5px); box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 60px rgba(63,216,200,.06); }
-.shot-frame img { display: block; width: 100%; height: auto; }
+.shot-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .shot-frame .frame-tag {
   position: absolute; top: 14px; left: 14px;
   padding: 4px 10px; background: rgba(7,8,10,.82); backdrop-filter: blur(8px);
@@ -239,6 +247,35 @@ section { padding: 110px 0; position: relative; }
 .shot-copy li::before { content:""; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; background: var(--chrono); }
 .shot-copy li strong { color: var(--ink); }
 .ranch-row .shot-copy li::before { background: var(--farm); }
+
+/* ============ 装备与宠物成长 ============ */
+.growth-flow {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  margin: -24px 0 74px;
+}
+.growth-step {
+  min-height: 132px; padding: 22px 20px; position: relative;
+  border: 1px solid var(--hairline); border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(63,216,200,.055), transparent 62%), var(--surface);
+}
+.growth-step:not(:last-child)::after {
+  content: ""; position: absolute; top: 50%; right: -13px; z-index: 2;
+  width: 12px; height: 1px; background: var(--chrono);
+}
+.growth-step .code { font-family: var(--font-pixel); color: var(--chrono); font-size: 11px; letter-spacing: .18em; }
+.growth-step h3 { color: var(--ink); font-size: 17px; margin: 8px 0 5px; }
+.growth-step p { color: var(--mute); font-size: 13.5px; line-height: 1.6; }
+.pet-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 30px; }
+.pet-card {
+  display: grid; grid-template-columns: 68px 1fr; gap: 12px; align-items: center;
+  padding: 16px; border: 1px solid var(--hairline); border-radius: var(--radius);
+  background: var(--surface); transition: transform .25s, border-color .25s;
+}
+.pet-card:hover { transform: translateY(-3px); border-color: rgba(142,208,90,.4); }
+.pet-card img { width: 68px; height: 68px; object-fit: contain; }
+.pet-card h4 { color: var(--ink); font-size: 14px; line-height: 1.35; }
+.pet-card p { color: var(--mute); font-size: 12px; line-height: 1.5; margin-top: 4px; }
+.pet-card strong { color: var(--farm); font-weight: 600; }
 
 /* 牧趣 / 农场行者：bottom row of small sprites next to text */
 .mini-rally {
@@ -299,6 +336,11 @@ section { padding: 110px 0; position: relative; }
 .final h2 { font-size: clamp(32px, 4.4vw, 52px); font-weight: 800; color: var(--ink); line-height: 1.15; margin-bottom: 18px; letter-spacing: -.015em; }
 .final p { color: var(--body); font-size: 16.5px; max-width: 460px; margin: 0 auto 36px; }
 .final .qr-hint { margin-top: 26px; font-size: 13px; color: var(--mute); font-family: var(--font-pixel); letter-spacing: .15em; }
+.application-qr {
+  width: min(240px, 72vw); height: auto; display: block; margin: 0 auto;
+  padding: 10px; background: #fff; border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.45), 0 0 0 1px rgba(63,216,200,.2);
+}
 
 /* ============ 页脚 ============ */
 footer { border-top: 1px solid var(--hairline-soft); padding: 40px 0 48px; margin-top: 0; }
@@ -315,9 +357,16 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
 @media (max-width: 640px) { .mon-float.f4 { display: none; } }
 
 /* ============ 滚动入场 ============ */
-.rv { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
-.rv.on, .no-js .rv { opacity: 1; transform: none; }
+.rv { opacity: 1; transform: none; }
+.js .rv { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+.js .rv.on { opacity: 1; transform: none; }
 @media print { .rv { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .js .rv { opacity: 1; transform: none; }
+}
 
 /* ============ 响应式 ============ */
 @media (max-width: 920px) {
@@ -326,6 +375,8 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
   .hero-ctas, .hero-stats { justify-content: center; }
   .hero-visual { height: 560px; }
   .loop-grid { grid-template-columns: 1fr 1fr; }
+  .growth-flow, .pet-grid { grid-template-columns: 1fr 1fr; }
+  .growth-step:nth-child(2)::after { display: none; }
   .shot-row, .shot-row:nth-child(even) { grid-template-columns: 300px 1fr; gap: 40px; }
   .shot-row:nth-child(even) .shot-frame { order: 0; }
   .dex { grid-template-columns: repeat(3, 1fr); }
@@ -333,7 +384,11 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
 @media (max-width: 640px) {
   section { padding: 72px 0; }
   .nav-links { display: none; }
+  .brand small { display: none; }
+  .nav-cta { padding: 8px 12px; }
   .loop-grid { grid-template-columns: 1fr; }
+  .growth-flow, .pet-grid { grid-template-columns: 1fr; }
+  .growth-step::after { display: none; }
   .shot-row, .shot-row:nth-child(even) { grid-template-columns: 1fr; gap: 28px; }
   .shot-frame { max-width: 320px; margin: 0 auto; }
   .dex { grid-template-columns: repeat(2, 1fr); }
@@ -350,10 +405,11 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
     <ul class="nav-links">
       <li><a href="#loop">核心玩法</a></li>
       <li><a href="#journey">地下之旅</a></li>
+      <li><a href="#growth">装备宠物</a></li>
       <li><a href="#homestead">据点生活</a></li>
       <li><a href="#monsters">怪物志</a></li>
     </ul>
-    <a class="nav-cta" href="#play">开始游戏</a>
+    <a class="nav-cta" href="#play">申请测试</a>
   </div>
 </nav>
 
@@ -362,23 +418,23 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
   <div class="wrap">
     <div class="hero-copy">
       <span class="hero-tag"><span class="dot"></span>REVERSE CHRONO 衍生 · 微信小游戏</span>
-      <h1 class="hero-title">白天在地下<br>晚上回<span class="chrono-word">据点种田</span></h1>
-      <p class="hero-sub">地牢 + 生活模拟的双重日常：转动三轴战斗转轮闯 <strong>60 关</strong>生态区，回到<strong>新据点</strong>种菜养鸡，把 8 种作物摆上商人的货车，再把牛羊送进屠夫换回食物和金币。</p>
+      <h1 class="hero-title">晚上在地下<br>白天回<span class="chrono-word">据点种田</span></h1>
+      <p class="hero-sub">地牢 + 生活模拟的双重日常：转动三轴战斗转轮闯 <strong>60 关</strong>生态区，收集五部位套装、合成升阶；回到<strong>新据点</strong>种菜养鸡，用收成喂养四种战斗宠物。</p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="#play">▶ 微信扫码即玩</a>
+        <a class="btn btn-primary" href="#play">扫码申请测试</a>
         <a class="btn btn-ghost" href="#journey">查看实机画面</a>
       </div>
       <div class="hero-stats">
         <div class="hero-stat"><div class="num"><em>60</em> 关</div><div class="lbl">固定关数 · 双 Boss 终局</div></div>
         <div class="hero-stat"><div class="num"><em>30</em>+ 种</div><div class="lbl">怪物 · 普通 / 镜像 / Boss</div></div>
-        <div class="hero-stat"><div class="num"><em>2</em> 种日常</div><div class="lbl">地牢 × 据点农场×牧场</div></div>
+        <div class="hero-stat"><div class="num"><em>4</em> 种宠物</div><div class="lbl">偏好喂养 · LV.10 解锁追击</div></div>
       </div>
     </div>
     <div class="hero-visual">
       <div class="mon-float f1"><img class="pix" src="assets/monsters/echo.png" alt="回声兽"></div>
       <div class="mon-float f2"><img class="pix" src="assets/monsters/red-fungus.png" alt="赤帽菌"></div>
       <div class="mon-float f3"><img class="pix" src="assets/monsters/dragon.png" alt="暖巢幼龙"></div>
-      <div class="mon-float f4"><img class="pix" src="assets/promo/chicken-white.png" alt=""></div>
+      <div class="mon-float f4" aria-hidden="true"><img class="pix" src="assets/promo/chicken-white.png" alt=""></div>
       <div class="phone"><img class="pix" src="assets/screenshots/first-battle.png" alt="Chrono Mini 首关战斗画面" fetchpriority="high"></div>
     </div>
   </div>
@@ -395,7 +451,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
     <div class="loop-grid">
       <div class="loop-card rv">
         <div class="loop-head">
-          <div class="loop-icon">⚙️</div>
+          <div class="loop-chip">SPIN</div>
           <div class="loop-num">01 / SPIN</div>
         </div>
         <h3>消耗生命，转动三轴</h3>
@@ -403,7 +459,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
       </div>
       <div class="loop-card rv">
         <div class="loop-head">
-          <div class="loop-icon">🎰</div>
+          <div class="loop-chip">MATCH</div>
           <div class="loop-num">02 / PATTERN</div>
         </div>
         <h3>图案连携决定伤害</h3>
@@ -411,7 +467,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
       </div>
       <div class="loop-card rv">
         <div class="loop-head">
-          <div class="loop-icon">🔗</div>
+          <div class="loop-chip">BUILD</div>
           <div class="loop-num">03 / CHARM</div>
         </div>
         <h3>挂件构筑流派</h3>
@@ -419,7 +475,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
       </div>
       <div class="loop-card rv">
         <div class="loop-head">
-          <div class="loop-icon ember">🩸</div>
+          <div class="loop-chip ember">DEBT</div>
           <div class="loop-num">04 / DEBT</div>
         </div>
         <h3>血包是唯一救赎</h3>
@@ -427,7 +483,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
       </div>
       <div class="loop-card rv">
         <div class="loop-head">
-          <div class="loop-icon gold">👥</div>
+          <div class="loop-chip gold">TARGET</div>
           <div class="loop-num">05 / TARGET</div>
         </div>
         <h3>点击切换目标</h3>
@@ -435,7 +491,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
       </div>
       <div class="loop-card rv">
         <div class="loop-head">
-          <div class="loop-icon ember">👑</div>
+          <div class="loop-chip ember">BOSS</div>
           <div class="loop-num">06 / BOSS</div>
         </div>
         <h3>每 5 关一个 Boss</h3>
@@ -506,6 +562,95 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
   </div>
 </section>
 
+<!-- ================= 装备与宠物成长 ================= -->
+<section id="growth">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">长期成长</div>
+      <h2 class="sec-title">地下带回装备<br>据点养大伙伴</h2>
+      <p class="sec-desc">每次冒险都会沉淀成下一次出发的底气。装备、套装、合成与宠物喂养跨局保留，把战斗掉落和据点收成串成一条完整成长线。</p>
+    </div>
+
+    <div class="growth-flow rv" aria-label="装备与宠物成长循环">
+      <div class="growth-step">
+        <div class="code">01 · DROP</div>
+        <h3>击败怪物掉装备</h3>
+        <p>普通怪与 Boss 都会掉落，越深入地牢，越有机会拿到高品质词条。</p>
+      </div>
+      <div class="growth-step">
+        <div class="code">02 · BUILD</div>
+        <h3>穿套装定流派</h3>
+        <p>五个防具位各有主属性；同套穿 2 / 3 / 5 件，逐步激活套装能力。</p>
+      </div>
+      <div class="growth-step">
+        <div class="code">03 · FUSE</div>
+        <h3>五件合成升一阶</h3>
+        <p>同部位、同品质装备可升阶，从普通一路成长到传说与逆时品质。</p>
+      </div>
+      <div class="growth-step">
+        <div class="code">04 · FEED</div>
+        <h3>收成喂养宠物</h3>
+        <p>宠物吃作物升级，达到 LV.10 后加入战斗，在每轮攻击后发动追击。</p>
+      </div>
+    </div>
+
+    <div class="shots">
+      <div class="shot-row rv">
+        <div class="shot-frame">
+          <span class="frame-tag">装备背包 · 21 件</span>
+          <img class="pix" src="assets/screenshots/equipment-backpack.png" alt="装备背包：五个防具位、宠物位、套装效果与一键合成功能" loading="lazy">
+        </div>
+        <div class="shot-copy">
+          <div class="step">EQUIPMENT · SET</div>
+          <h3>五个防具位，五套构筑方向</h3>
+          <p>头盔、护臂、身甲、腿甲、战鞋分别强化生命、单体、群体和转动成本。拾荒、滤菌、管务、矿勤、旧卫五套装备，让你在生存、挂件、涡流、裂刃与 Boss 战之间取舍。</p>
+          <ul>
+            <li><strong>六档品质</strong>：普通 → 精良 → 稀有 → 史诗 → 传说 → 逆时</li>
+            <li><strong>随机词条与高阶特效</strong>：同一件装备也可能服务不同流派</li>
+            <li><strong>安全合成</strong>：已穿戴、已锁定装备不会被消耗，宠物也不会被一键合成误吞</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="shot-row rv ranch-row">
+        <div class="shot-frame">
+          <span class="frame-tag farm">物品背包 · 宠物喂养</span>
+          <img class="pix" src="assets/screenshots/pet-feeding.png" alt="使用胡萝卜、土豆、卷心菜和甜菜喂养宠物" loading="lazy">
+        </div>
+        <div class="shot-copy">
+          <div class="step">PET · COMPANION</div>
+          <h3>种下去的是作物，养起来的是战力</h3>
+          <p>四种宠物各自偏爱一种作物，喂对食物会额外获得 50% 经验。宠物等级随装备个体保留；合成同类宠物时，培养进度也会继承到新伙伴身上。</p>
+          <ul>
+            <li><strong>LV.10 解锁追击</strong>：每轮战斗后自动补刀</li>
+            <li>不同宠物拥有均衡、连击、重击、三连等不同追击节奏</li>
+            <li>培养上限 LV.20，农田产出直接转化为长期战斗成长</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pet-grid rv" aria-label="四种可培养宠物">
+      <article class="pet-card">
+        <img class="pix" src="assets/equipment/pets/basket-fungus.png" alt="背篓菌宠" loading="lazy">
+        <div><h4>背篓菌宠</h4><p>偏爱<strong>卷心菜</strong><br>均衡追击 1 次</p></div>
+      </article>
+      <article class="pet-card">
+        <img class="pix" src="assets/equipment/pets/moss-mouse.png" alt="苔帽团鼠" loading="lazy">
+        <div><h4>苔帽团鼠</h4><p>偏爱<strong>胡萝卜</strong><br>连携追击 2 次</p></div>
+      </article>
+      <article class="pet-card">
+        <img class="pix" src="assets/equipment/pets/pipe-mole.png" alt="管尾鼹兽" loading="lazy">
+        <div><h4>管尾鼹兽</h4><p>偏爱<strong>土豆</strong><br>高伤重掘 1 次</p></div>
+      </article>
+      <article class="pet-card">
+        <img class="pix" src="assets/equipment/pets/rain-sparrow.png" alt="蓑羽芽雀" loading="lazy">
+        <div><h4>蓑羽芽雀</h4><p>偏爱<strong>甜菜</strong><br>轻羽追击 3 次</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- ================= 据点生活 · 新增 ================= -->
 <section id="homestead">
   <div class="wrap">
@@ -548,7 +693,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
           <h3>买幼崽，喂大，再交给感情和订单</h3>
           <p>小鸡 18 金、奶牛 95 金、猪 45 金。喂饱了它们回头就走——你要常点木槽添菜维持伙食。鸡到点会自己下蛋，奶牛按需要挤奶，猪到 300kg 就该联系屠夫。</p>
           <ul>
-            <li><strong>166 分钟一只小家小鸡成年</strong>：留个蛋它才算没辜负</li>
+            <li><strong>166 分钟一只小鸡成年</strong>：留个蛋它才算没辜负</li>
             <li>围栏上限 12 头，不同品种伙食节奏不一样——先算口粮再下手</li>
           </ul>
           <div class="mini-rally" aria-hidden="true">
@@ -571,7 +716,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
           <h3>养不住就送屠夫，猪到 300kg 最划算</h3>
           <p>白鸡能换 2 块白鸡肉 + 8 金币；98kg 的猪是 4 块猪肉 + 9 金币——肥到 300kg 才配叫满额。肉类先扣下一部分喂给你的农场宠物，剩下贩卖抵扣屠夫委托费用。</p>
           <ul>
-            <li><strong>没灵美食，动物也不下蛋</strong>——感情变现要先维护</li>
+            <li><strong>没喂饱，动物也不下蛋</strong>——感情变现要先维护</li>
             <li>屠夫一次喊出多种订单，先接最大的再做小的</li>
           </ul>
           <div class="mini-rally" aria-hidden="true">
@@ -639,14 +784,14 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
 <section id="play">
   <div class="wrap">
     <div class="final rv">
-      <div class="sec-kicker" style="justify-content:center">开始游戏</div>
+      <div class="sec-kicker" style="justify-content:center">测试申请</div>
       <h2>第 60 关的双 Boss<br>正在净化核心等你</h2>
-      <p>不需要下载，不需要注册。微信内搜索「Chrono Mini」小程序，立刻进入地下生态区。</p>
-      <div class="hero-ctas" style="justify-content:center; margin-bottom:0">
-        <a class="btn btn-primary" href="#" onclick="return false">▶ 微信搜索「Chrono Mini」</a>
+      <p>当前处于测试版意向征集阶段。使用微信扫描二维码，添加时备注「Chrono Mini 测试」，申请体验资格。</p>
+      <img class="application-qr" src="assets/brand/wechat-test-application-qr.png" alt="申请 Chrono Mini 测试资格的微信二维码" loading="lazy">
+      <div class="qr-hint">— 微信扫码申请 · 手机端可长按识别 —</div>
+      <div class="hero-ctas" style="justify-content:center; margin:26px 0 0">
         <a class="btn btn-ghost" href="#top">回到顶部</a>
       </div>
-      <div class="qr-hint">— 测试版意向征集中 · 关注公众号获取上线通知 —</div>
     </div>
   </div>
 </section>
@@ -660,6 +805,7 @@ footer .world { font-family: var(--font-pixel); letter-spacing: .18em; font-size
 </footer>
 
 <script>
+document.documentElement.classList.replace('no-js', 'js');
 // 滚动进场；无 IntersectionObserver 时直接全亮
 if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver((entries) => {
@@ -671,6 +817,7 @@ if ('IntersectionObserver' in window) {
 } else {
   document.querySelectorAll('.rv').forEach(el => el.classList.add('on'));
 }
+
 </script>
 
 </body>

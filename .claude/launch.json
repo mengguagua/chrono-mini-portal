@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "portal",
+      "name": "portal-2",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8311"],
-      "port": 8311
+      "runtimeArgs": ["-m", "http.server", "8312"],
+      "port": 8312
     }
   ]
 }

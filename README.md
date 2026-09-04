@@ -23,23 +23,26 @@ python3 -m http.server 8311
   - `ember` 红（Boss/危险）
   - `gold` 金（升级/装备）
 - **字体**：中文 PingFang / 微软雅黑 + 备选 ZCOOL 字体（已引入但未在线加载，离线时回落 sans）
-- **叙事顺序**：Hero（slogan + 数据）→ 核心玩法（6 张卡片）→ 地下之旅（实机截图叙事）→ 怪物志（普通/镜像/Boss 卡片）→ 终局 CTA
+- **叙事顺序**：Hero（slogan + 数据）→ 核心玩法（6 张卡片）→ 地下之旅（实机截图叙事）→ 装备与宠物成长 → 据点生活 → 怪物志 → 终局 CTA
 
 ## 文件结构
 
 ```
-chrono-mini-protal/
+chrono-mini-portal/
 ├── index.html                  # 单文件站点（所有样式内联）
 ├── README.md
 └── assets/
-    ├── brand/avatar.png        # 品牌头像（favicon 也用它）
+    ├── brand/                  # 品牌头像与微信测试申请二维码
+    ├── equipment/pets/         # 四种宠物像素图
     ├── monsters/               # 怪物像素图（image-rendering: pixelated 渲染）
+    ├── promo/                  # 农场与牧场宣传小素材
     └── screenshots/            # 游戏实机截图
 ```
 
 ## 资源来源
 
-- 截图：`chrono-mini/screenshots/audit/`（Lv.05 Boss 战利品 / Lv.14 炽焰爆发 / 升级强化）
+- 截图：`chrono-mini/screenshots/`（战斗、装备背包、宠物喂养、农场与牧场实机画面）
+- 宠物：`chrono-mini/assets/equipment/pets/`
 - 怪物：`chrono-mini/assets/monsters/{main, fungus}/` + 同人熔火幼龙
 - 头像：`chrono-mini/marketing/wechat-mini-avatar-source-v2.png`
 

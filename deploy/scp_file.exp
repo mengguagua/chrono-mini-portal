@@ -1,0 +1,45 @@
+#!/usr/bin/expect -f
+
+set timeout 120
+
+if {$argc < 3} {
+    puts stderr "usage: scp_file.exp <credentials-file> <local-file> <remote-path>"
+    exit 64
+}
+
+set credentials_path [lindex $argv 0]
+set local_file [lindex $argv 1]
+set remote_path [lindex $argv 2]
+
+set handle [open $credentials_path r]
+set credentials [read $handle]
+close $handle
+
+if {![regexp {Main IP:[[:space:]]*([^\n]+)} $credentials -> host]} {
+    puts stderr "missing Main IP in credentials file"
+    exit 65
+}
+if {![regexp {Root Password:[[:space:]]*([^\n]+)} $credentials -> password]} {
+    puts stderr "missing Root Password in credentials file"
+    exit 65
+}
+
+set host [string trim $host]
+set password [string trim $password]
+
+spawn scp -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 $local_file root@$host:$remote_path
+expect {
+    -re {assword:} {
+        send -- "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts stderr "scp timed out"
+        exit 2
+    }
+    eof {
+        catch wait result
+        set exit_code [lindex $result 3]
+        exit $exit_code
+    }
+}
